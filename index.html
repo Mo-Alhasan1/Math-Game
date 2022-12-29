@@ -1,0 +1,105 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="logo">
+    <img src="https://www.lotusproject.eu/wp-content/uploads/2021/07/cropped-cropped-%D8%AE%D9%84%D9%81%D9%8A%D8%A9-%D8%B4%D9%81%D8%A7%D8%B4%D8%A9-1.png" alt="Logo" style="height: 250px;">
+  </div>
+    <div id="game">
+      <div id="number-display"></div>
+      <form onsubmit="return checkSum()">
+        <label id="enter" for="sum-input" style="font-size: 30px;">Enter the sum of the numbers that appeared on the screen:<br>  <span style="color: red; font-size: 20px; text-align: center;">
+          &nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
+          &nbsp;Please wait until the last number stops on the screen</span></label><br><br>
+        <input type="text" id="sum-input" placeholder=""><br>
+        <input type="submit" id="sum-submit" value="Submit"  disabled>
+        
+      </form>
+      <p id="description">The numbers will display For <spwan style="color: red;"> &nbsp;5&nbsp; </spwan> times <spwan style="color: red;"> &nbsp;10 &nbsp;</spwan> Numbers each time  for every correct answer your will get a <spwan style="color: green;">&nbsp;10&nbsp;</spwan> score points </p>
+      <p id="score1">Score: <span id="score">0</span></p>
+    </div>
+    <button id="start-button" onclick="startGame()">Start</button>
+  
+    <script>
+      let score = 0;
+      let currentSum = 0;
+  
+      function displayNumbers() {
+        // Generate an array of 10 random numbers
+        const numbers = [];
+        for (let i = 0; i < 10; i++) {
+          numbers.push(Math.floor(Math.random() * 100));
+        }
+  
+        // Set up a variable to keep track of the current number
+        let currentNumber = 0;
+  
+        function displayNumber() {
+  // Update the display with the current number
+  document.getElementById("number-display").innerHTML = numbers[currentNumber];
+
+  // Increment the current number and sum
+  currentNumber++;
+  currentSum += numbers[currentNumber - 1];
+
+  // If there are more numbers to display, set a timeout to display the next one in 2 seconds
+  if (currentNumber < numbers.length) {
+    setTimeout(displayNumber, 2000);
+  } else {
+    // Enable the submit button when the numbers have finished spinning
+    document.getElementById("sum-submit").removeAttribute("disabled");
+  }
+}
+
+  
+        // Start the numbers
+        displayNumber();
+      }
+  
+      function checkSum() {
+  // Get the sum entered
+  const enteredSum = parseInt(document.getElementById("sum-input").value);
+
+  // Check if the entered sum is equal to the actual sum of the numbers
+  if (enteredSum === currentSum) {
+    // If the sum is correct, increment the score
+    score += 10;
+    document.getElementById("score").innerHTML = score;
+  } else {
+    alert("Incorrect. The correct Answer is " + currentSum);
+    return; // stop the function from continuing
+  }
+
+  // Reset the current sum for the next round
+  currentSum = 0;
+
+  // If there are more rounds to play, display the next set of numbers
+  if (score < 50) {
+    displayNumbers();
+  } else {
+    alert("Game over! Your final score is " + score);
+    // change the text of the button to "Start Again"
+    document.getElementById("start-button").innerHTML = "Start Again";
+  }
+
+  // Prevent the form from being submitted
+  return false;
+}
+  
+      function startGame() {
+        document.getElementById("game");
+        document.getElementById("start-button");
+        displayNumbers();
+      }
+    </script>
+  </body>
+  
+</html>
+
